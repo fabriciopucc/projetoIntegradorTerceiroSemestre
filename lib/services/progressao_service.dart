@@ -1,0 +1,136 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+import '../models/localizacao.dart';
+import '../providers/sessao_provider.dart';
+
+class ProgressaoService {
+
+  //Alterar pontuação
+  Future<void> alterarPontuacao( SessaoProvider sessao, String operacao) async {
+    final collection = FirebaseFirestore.instance .collection('saves');
+    int novaPontuacao = sessao.pontuacao;
+
+    if ( operacao == "aumentar" && sessao.pontuacao < 4) novaPontuacao++; //Soma 1
+    if ( operacao == "diminuir" && sessao.pontuacao > 0) novaPontuacao--; //Subtrai 1
+
+    final docRef = collection.doc(sessao.saveId);
+
+    // Atualiza no firestone
+    await docRef.update({ 'pontuacao': novaPontuacao});
+    sessao.pontuacao = novaPontuacao;
+
+    sessao.notifyListeners();
+  }
+
+  //Alterar nivel no documento no banco
+  Future<void> adicionarNivelDesbloqueado(SessaoProvider sessao) async {
+
+    final collection = FirebaseFirestore.instance.collection('saves');
+
+    final docRef = collection.doc(sessao.saveId);
+    final doc = await docRef.get();
+
+    if (!doc.exists) return;
+    
+    final data = doc.data();
+
+    List<int>  niveisDesbloqueados = [];
+
+    if (data != null && data['niveis_desbloqueados'] != null) {
+
+      niveisDesbloqueados = List<int>.from( data['niveis_desbloqueados']);
+    }
+
+    // Adiciona se não existir
+    if (!niveisDesbloqueados.contains( sessao.pontuacao)) {
+      niveisDesbloqueados.add(sessao.pontuacao);
+
+      //Atualiza no firestone
+      await docRef.update({'niveis_desbloqueados':niveisDesbloqueados,});
+
+      sessao.adicionarNivelDesbloqueado(sessao.pontuacao);
+    }
+  }
+
+  // Abrir loading
+  void abrirLoading(BuildContext context) {
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return const PopScope(
+          canPop: false,
+          child: Material(
+            color: Colors.black54,
+            child: Center(
+              child:
+                CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Fechar loading
+  void fecharLoading(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  // Desbloquear nivel
+  Future<void> verificarEDesbloquear(BuildContext context, SessaoProvider sessao, String andar) async {
+    abrirLoading(context);
+
+    try {
+      final localizacaoAlvo = listaLocalizacoes[sessao.pontuacao];
+
+      Position posicaoAtual = await Geolocator.getCurrentPosition(
+        desiredAccuracy:LocationAccuracy.medium,
+        timeLimit: const Duration( seconds: 8),
+      );
+
+      // Distância
+      double distancia = Geolocator.distanceBetween(
+        //Atual
+        posicaoAtual.latitude,
+        posicaoAtual.longitude,
+        //Do alvo
+        localizacaoAlvo.latitude,
+        localizacaoAlvo.longitude,
+      );
+
+      bool chegou = distancia <= 10;
+
+      fecharLoading(context);
+
+      if (chegou && localizacaoAlvo.nivel.toLowerCase() == andar.toLowerCase()) {
+       await adicionarNivelDesbloqueado(sessao,);
+        final nivelFase = sessao.pontuacao + 1;
+        ScaffoldMessenger.of( context).showSnackBar(
+          SnackBar(
+            content: Text( 'Fase $nivelFase desbloqueada!'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Você não está no local correto.'),
+          ),
+        );
+      }
+    } catch (e) {
+      fecharLoading(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+        SnackBar(
+          content: Text('Erro ao verificar localização: $e'),
+        ),
+      );
+    }
+  }
+}

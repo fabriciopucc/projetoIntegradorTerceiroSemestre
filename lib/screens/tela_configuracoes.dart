@@ -7,8 +7,7 @@ class TelaConfiguracoes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white), 
-        backgroundColor: const Color.fromARGB(255, 138, 18, 236),
+        title: const Text('Configurações'),
       ),
       body: Center(
         child: Text(

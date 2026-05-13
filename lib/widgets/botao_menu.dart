@@ -22,14 +22,13 @@ class BotaoMenu extends StatelessWidget {
               if (states.contains(MaterialState.hovered)) {
                 return const Color.fromARGB(255, 113, 13, 195);
               }
-              return const Color.fromARGB(255, 138, 18, 236);// Cor padrão
+              return const Color.fromARGB(255, 138, 18, 236);
             },
           ),
           fixedSize: WidgetStateProperty.all(const Size(200, 40)),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              //side: const BorderSide(color: Colors.blue), // Opcional: cor da borda
             ),
           ),
         ),

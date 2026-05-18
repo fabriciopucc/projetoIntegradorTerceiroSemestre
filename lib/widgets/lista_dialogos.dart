@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rpg_projeto_integrador/models/dialogo.dart';
+import 'package:rpg_projeto_integrador/providers/sessao_provider.dart';
 import 'package:rpg_projeto_integrador/services/dialogo_service.dart';
 
 class WidgetDialogos extends StatefulWidget {
   final List<Dialogo> dialogos;
+  final int indice;
 
   const WidgetDialogos({
     super.key,
     required this.dialogos,
+    required this.indice
   });
 
   @override
@@ -28,24 +32,51 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
     final bool iniciou = service.iniciouDialogo();
     final dialogoAtual = service.dialogoAtual(widget.dialogos);
 
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (iniciou && dialogoAtual != null)
-            _buildDialogo(dialogoAtual),
+    final bool mostrarOverlay = iniciou && dialogoAtual != null;
 
-          const SizedBox(height: 20),
-
-          if (!iniciou)
-            ElevatedButton(
-              onPressed: atualizarDialogo,
-              child: const Text("Iniciar diálogo"),
+    return Stack(
+      children: [
+        if (mostrarOverlay)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
             ),
-        ],
-      ),
+          ),
+
+        // ===== CONTEÚDO =====
+        Center(
+          child: Container(
+            width: 500,
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (iniciou && dialogoAtual != null)
+                  _buildDialogo(dialogoAtual),
+
+                const SizedBox(height: 20),
+
+                if (!iniciou)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:Color.fromARGB(255, 0, 182, 76),
+                      foregroundColor:Colors.white,
+                      shape:RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
+                    onPressed: atualizarDialogo,
+                    child: const Text("Iniciar diálogo"),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -55,12 +86,10 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
     return GestureDetector(
       onTap: atualizarDialogo,
       child: Row(
-        mainAxisAlignment: esquerda ? MainAxisAlignment.start : MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (esquerda) _iconePersonagem(),
+          if (esquerda) _iconePersonagem(dialogo.autor),
 
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
 
           Card(
             elevation: 4,
@@ -68,7 +97,8 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
               width: 220,
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
                     dialogo.autor,
@@ -85,7 +115,7 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
                     style: const TextStyle(fontSize: 16),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
 
                   const Text(
                     "Clique para continuar",
@@ -101,16 +131,25 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
 
           const SizedBox(width: 10),
 
-          if (!esquerda) _iconePersonagem(),
+          if (!esquerda) _iconePersonagem(dialogo.autor),
         ],
       ),
     );
   }
 
-  Widget _iconePersonagem() {
-    return const CircleAvatar(
-      radius: 25,
-      child: Icon(Icons.person),
+  Widget _iconePersonagem(String autor) {
+
+    final img = 
+      (autor.toLowerCase() == "alfa") ? "alfa.png" 
+    : (autor.toLowerCase() == "beta") ? "beta.png"
+    : (autor.toLowerCase() == "gama") ? "gama.png"
+    : "delta.png";
+
+    return Image.asset(
+      'lib/assets/images/$img',
+      width: 200,
+      height: 200,
+      fit: BoxFit.contain,
     );
   }
 }

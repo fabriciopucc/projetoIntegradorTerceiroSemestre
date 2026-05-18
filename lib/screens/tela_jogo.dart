@@ -33,14 +33,13 @@ class _TelaJogoState extends State<TelaJogo> {
       },
 
       child: Scaffold(
-
         appBar: AppBar(
           title: const Text('Jogo'),
         ),
 
         body: SingleChildScrollView(
           child: Padding(
-            padding:const EdgeInsets.all(20),
+            padding:const EdgeInsets.all(0),
             child: Column(
               children: [
                 SizedBox(
@@ -48,7 +47,7 @@ class _TelaJogoState extends State<TelaJogo> {
                   child: Fases.renderizarFase(sessao),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -107,13 +106,14 @@ class _TelaJogoState extends State<TelaJogo> {
                       ),
                     ),
 
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 10),
 
                     BotaoDesbloquearNivel(sessao: sessao, andar: andarSelecionado),
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 10),
+                /*const SizedBox(height: 25),
 
                 Row(
                   mainAxisAlignment:MainAxisAlignment.center,
@@ -138,7 +138,7 @@ class _TelaJogoState extends State<TelaJogo> {
                   ],
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 25),*/
               ],
             ),
           ),

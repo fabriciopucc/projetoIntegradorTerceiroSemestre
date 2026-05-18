@@ -7,10 +7,10 @@ class Dialogo {
 }
 
 final dialogosFase1 = [
-  Dialogo("Fafa", "Olá amigo", "direito"),
-  Dialogo("Pedro", "Olá, eai?", "esquerdo"),
-  Dialogo("Fafa", "Tou bem, e voce?", "direito"),
-  Dialogo("Pedro", "Estou bem tambem", "esquerdo"),
+  Dialogo("Alfa", "Intruso detectado. Identidade… Vector. Estado: enfraquecido.", "esquerdo"),
+  Dialogo("Vector", "Vamos ver se você é tudo isso mesmo. Resolva meu mais novo passatempo, e lhe direi aonde ir.", "direito"),
+  Dialogo("Alfa", "Tou bem, e voce?", "direito"),
+  Dialogo("Alfa", "Ok, se é isso que você quer. Lá vai: \nVinte telas observam o mestre, mas ninguém as vê. \nEntre o código e o cano, o segundo nível guarda o plano. \nProcure o apoio onde os bits descansam ao lado do fluxo das águas", "esquerdo"),
 ];
 
 final dialogosFase2 = [

@@ -21,7 +21,7 @@ class Fases {
     var fase = indice + 1;
 
     return Container(
-      height: 550,
+      height: 575,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -65,7 +65,7 @@ class Fases {
           Text(
             "Enigma: ",
             style: const TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -74,8 +74,9 @@ class Fases {
 
           Text(
             enigmas[indice].texto,
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 25,
+              fontSize: 20,
             ),
           ),
         ],
@@ -114,7 +115,7 @@ class Fases {
       titulo: 'FASE 3',
       cor: Colors.yellow.shade200,
       indice: 2,
-      dialogos: listaDeDialogos[1],
+      dialogos: listaDeDialogos[2],
       sessao: sessao
     );
   }
@@ -126,7 +127,7 @@ class Fases {
       titulo: 'FASE 4',
       cor: Colors.green.shade200,
       indice: 3,
-      dialogos: listaDeDialogos[1],
+      dialogos: listaDeDialogos[3],
       sessao: sessao
     );
   }
@@ -138,7 +139,7 @@ class Fases {
       titulo: 'FASE 5',
       cor: Colors.blue.shade200,
       indice: 4,
-      dialogos: listaDeDialogos[1],
+      dialogos: listaDeDialogos[4],
       sessao: sessao
     );
   }

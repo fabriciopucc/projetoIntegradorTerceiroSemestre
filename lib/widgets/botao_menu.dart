@@ -16,20 +16,13 @@ class BotaoMenu extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
-                return const Color.fromARGB(255, 113, 13, 195);
-              }
-              return const Color.fromARGB(255, 138, 18, 236);
-            },
-          ),
-          fixedSize: WidgetStateProperty.all(const Size(200, 40)),
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.zero,
+          fixedSize: const Size(200, 45),
+          shape:RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         onPressed: () {
@@ -38,10 +31,33 @@ class BotaoMenu extends StatelessWidget {
             MaterialPageRoute(builder: (context) => telaDestino),
           );
         },
-        child: Text(
-          texto,
-          style: TextStyle(
-            color: Colors.white
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFFA855F7),
+                Color(0xFF7E22CE),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: const Color.fromARGB(255, 154, 5, 228),
+              width: 3,
+            ),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              texto,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.2,
+              ),
+            ),
           ),
         ),
       ),

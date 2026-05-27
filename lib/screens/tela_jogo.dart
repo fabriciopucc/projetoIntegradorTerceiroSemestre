@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
 import 'package:rpg_projeto_integrador/services/progressao_service.dart';
 import 'package:rpg_projeto_integrador/widgets/botao_desbloquear_nivel.dart';
 
@@ -25,6 +26,7 @@ class _TelaJogoState extends State<TelaJogo> {
   Widget build(BuildContext context) {
 
     final sessao = Provider.of<SessaoProvider>(context);
+    final global = Provider.of<VariaveisGlobaisProvider>(context);
 
     return PopScope(
 
@@ -33,112 +35,185 @@ class _TelaJogoState extends State<TelaJogo> {
       },
 
       child: Scaffold(
+        backgroundColor: const Color(0xFF1B1135),
         appBar: AppBar(
-          title: const Text('Jogo'),
+          backgroundColor: const Color(0xFF1B1135),
+          title: const Text(
+            'Jogo',
+            style: TextStyle(
+              color: Colors.white, // Deixa o texto branco
+              fontSize: 20,
+            ),
+          ),
+          iconTheme: const IconThemeData( color: Colors.white),
+          actionsIconTheme: const IconThemeData(color: Colors.white),
         ),
-
         body: SingleChildScrollView(
           child: Padding(
-            padding:const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
             child: Column(
               children: [
                 SizedBox(
                   width: double.infinity,
-                  child: Fases.renderizarFase(sessao),
+                  child: Fases.renderizarFase(sessao, global),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
 
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 180,
-                      child: DropdownButtonFormField<String>(
-                        decoration:InputDecoration(
-                          labelText: 'Andar',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.apartment_rounded,
+                          color: Color.fromARGB(255, 191, 94, 255),
+                        ),
 
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
+                        SizedBox(width: 8),
+
+                        Text(
+                          'SELECIONE O ANDAR',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 200,
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 35, 35, 50),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 170, 70, 255),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: andarSelecionado,
+                              dropdownColor: const Color.fromARGB(255, 35, 35, 50),
+                              iconEnabledColor: Colors.white,
+                              isExpanded: true,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 'Subsolo',
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.keyboard_double_arrow_down,
+                                        color: Color(0xFFA855F7),
+                                      ),
+
+                                      SizedBox(width: 5,),
+
+                                      Text('Subsolo'),
+                                    ],
+                                  )
+                                ),
+
+                                DropdownMenuItem(
+                                  value: 'Térreo',
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.home,
+                                        color: Color(0xFFA855F7),
+                                      ),
+
+                                      SizedBox(width: 5,),
+
+                                      Text('Térreo'),
+                                    ],
+                                  )
+                                ),
+
+                                DropdownMenuItem(
+                                  value: '1º andar',
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.looks_one,
+                                        color: Color(0xFFA855F7),
+                                      ),
+
+                                      SizedBox(width: 5,),
+
+                                      Text('1º andar'),
+                                    ],
+                                  )
+                                ),
+                                DropdownMenuItem(
+                                  value: '2º andar',
+                                 child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.looks_two,
+                                        color: Color(0xFFA855F7),
+                                      ),
+
+                                      SizedBox(width: 5,),
+
+                                      Text('2º andar'),
+                                    ],
+                                  )
+                                ),
+
+                                DropdownMenuItem(
+                                  value: '3º andar',
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.looks_3,
+                                        color: Color(0xFFA855F7),
+                                      ),
+
+                                      SizedBox(width: 5,),
+
+                                      Text('3º andar'),
+                                    ],
+                                  )
+                                ),
+                              ],
+
+                              onChanged: (value) {
+                                if (value != null) {
+                                  setState(() {
+                                    andarSelecionado = value;
+                                  });
+                                }
+                              },
+                            ),
                           ),
                         ),
 
-                        value: andarSelecionado,
+                        const SizedBox(height: 15),
 
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'Subsolo',
-                            child: Text('Subsolo'),
-                          ),
-
-                          DropdownMenuItem(
-                            value: 'Térreo',
-                            child: Text('Térreo'),
-                          ),
-
-                          DropdownMenuItem(
-                            value: '1º andar',
-                            child: Text('1º andar'),
-                          ),
-
-                          DropdownMenuItem(
-                            value: '2º andar',
-                            child: Text('2º andar'),
-                          ),
-
-                          DropdownMenuItem(
-                            value: '3º andar',
-                            child: Text('3º andar',),
-                          ),
-                        ],
-
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              andarSelecionado = value;
-                            });
-                          }
-                        },
-                      ),
+                        BotaoDesbloquearNivel(sessao: sessao, andar: andarSelecionado),
+                      ],
                     ),
 
-                    const SizedBox(width: 10),
-
-                    BotaoDesbloquearNivel(sessao: sessao, andar: andarSelecionado),
+                    const SizedBox(height: 30),
                   ],
                 ),
-
-                const SizedBox(height: 10),
-                /*const SizedBox(height: 25),
-
-                Row(
-                  mainAxisAlignment:MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        await progressaoService.alterarPontuacao(sessao,"diminuir",);
-                      },
-
-                      child: const Text('Voltar fase'),
-                    ),
-
-                    const SizedBox(width: 20),
-
-                    ElevatedButton(
-                      onPressed: () async {
-                        await progressaoService.alterarPontuacao(sessao, "aumentar");
-                      },
-
-                      child: const Text('Avançar fase'),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 25),*/
               ],
             ),
           ),

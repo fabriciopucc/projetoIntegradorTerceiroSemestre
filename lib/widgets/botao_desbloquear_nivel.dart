@@ -16,25 +16,60 @@ class BotaoDesbloquearNivel extends StatelessWidget {
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor:const Color.fromARGB(255,138,18,236,),
-        foregroundColor:Colors.white,
-        shape:RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        padding: EdgeInsets.zero,
+        fixedSize: const Size(200, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
+      ).copyWith(
+        overlayColor: WidgetStateProperty.all(
+          Colors.white.withOpacity(0.08),
         ),
       ),
-
       onPressed: () {
         progressaoService.verificarEDesbloquear(context,sessao,andar);
       },
-      child: const Text(
-        'Desbloquear nível',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFFA855F7),
+              Color(0xFF7E22CE),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(
+            color: const Color.fromARGB(255, 154, 5, 228),
+            width: 3,
+          ),
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.lock_open_rounded,
+                color: Colors.white,
+                size: 22,
+              ),
+
+              SizedBox(width: 10),
+
+              Text(
+              'Desbloquear',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ]),
         ),
       ),
     );

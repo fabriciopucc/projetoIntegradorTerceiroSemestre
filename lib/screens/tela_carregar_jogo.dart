@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rpg_projeto_integrador/models/localizacao.dart';
+import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
+import 'package:rpg_projeto_integrador/widgets/snackbar_widget.dart';
 
 import '../providers/sessao_provider.dart';
 
@@ -76,16 +78,22 @@ class TelaCarregarJogo extends StatelessWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-
                       // Botão carregar
                       ElevatedButton(
                         onPressed: () {
+                          final global = Provider.of<VariaveisGlobaisProvider>(context, listen: false);
+                          
+                          global.alterarExibirQuiz(false);
+                          global.alterarExibirBotaoAvancarFase(false);
+                          global.alterarExibirCutscene(true);
+                          
                           Provider.of<SessaoProvider>(context, listen: false).carregarSave(
                             novoSaveId: doc.id,
                             novoNome: nome,
                             novaPontuacao: pontuacao,
                             novoNiveisDesbloqueados: niveisDesbloqueados
                           );
+                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (_) => const TelaJogo()),
@@ -97,43 +105,22 @@ class TelaCarregarJogo extends StatelessWidget {
                       const SizedBox(width: 8),
 
                       // Botão apagar
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                      IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
                         ),
-                        onPressed: () async {
 
+                        onPressed: () async {
                           try {
                             // Apaga documento
                             await collection.doc(doc.id).delete();
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '$nome apagado',
-                                ),
-                              ),
-                            );
+                            SnackbarWidget.mostrar(context,  '$nome apagado');
                           } catch (e) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-
-                              const SnackBar(
-                                content: Text(
-                                  'Erro ao apagar save',
-                                ),
-                              ),
-                            );
+                            SnackbarWidget.mostrar(context,  'Erro ao apagar save');
                           }
                         },
-
-                        child: const Text(
-                          'Apagar',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),

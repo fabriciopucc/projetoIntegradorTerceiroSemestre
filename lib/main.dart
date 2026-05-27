@@ -7,9 +7,9 @@ import 'config/firebase_options.dart';
 import 'screens/tela_inicial.dart';
 
 import 'providers/sessao_provider.dart';
+import 'providers/variaveis_globais_provider.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -17,11 +17,18 @@ void main() async {
   );
 
   runApp(
+    MultiProvider(
+      providers: [
 
-    ChangeNotifierProvider(
+        ChangeNotifierProvider(
+          create: (_) => SessaoProvider(),
+        ),
 
-      create: (_) => SessaoProvider(),
+        ChangeNotifierProvider(
+          create: (_) => VariaveisGlobaisProvider(),
+        ),
 
+      ],
       child: const MyApp(),
     ),
   );
@@ -32,9 +39,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      title: 'Jogo Web',
+      title: 'Void Riddles',
 
       theme: ThemeData(
         primarySwatch: Colors.blue,

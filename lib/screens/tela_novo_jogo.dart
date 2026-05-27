@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
 
 import '../widgets/snackbar_widget.dart';
 import '../providers/sessao_provider.dart';
@@ -10,15 +11,12 @@ class TelaNovoJogo extends StatefulWidget {
   const TelaNovoJogo({super.key});
 
   @override
-  State<TelaNovoJogo> createState() =>
-      _TelaNovoJogoState();
+  State<TelaNovoJogo> createState() => _TelaNovoJogoState();
 }
 
-class _TelaNovoJogoState
-    extends State<TelaNovoJogo> {
+class _TelaNovoJogoState extends State<TelaNovoJogo> {
 
-  final TextEditingController nomeController =
-      TextEditingController();
+  final TextEditingController nomeController = TextEditingController();
 
   final collection = FirebaseFirestore.instance.collection('saves');
 
@@ -43,10 +41,16 @@ class _TelaNovoJogoState
     });
 
     if (nomeJaExiste) {
-      SnackbarWidget.mostrar( context, 'Já existe um save com esse nome');
+      SnackbarWidget.mostrar(context, 'Já existe um save com esse nome');
 
       return;
     }
+
+    final global = Provider.of<VariaveisGlobaisProvider>(context, listen: false);
+                          
+    global.alterarExibirQuiz(false);
+    global.alterarExibirBotaoAvancarFase(false);
+    global.alterarExibirCutscene(true);
 
     // Salvar no firestone
     final novoSave =
@@ -91,7 +95,6 @@ class _TelaNovoJogoState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
             const Text(
               "Criar Novo Save",
               style: TextStyle(
@@ -115,19 +118,43 @@ class _TelaNovoJogoState
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: salvarSave,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255,138,18,236),
-                  padding:const EdgeInsets.symmetric(
-                    vertical: 16,
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.zero,
+                  fixedSize: const Size(200, 45),
+                  shape:RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-
-                child: const Text(
-                  'Criar',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+                onPressed: salvarSave,
+                child: Ink(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFFA855F7),
+                        Color(0xFF7E22CE),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 154, 5, 228),
+                      width: 3,
+                    ),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Criar",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
                   ),
                 ),
               ),

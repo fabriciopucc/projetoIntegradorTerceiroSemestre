@@ -27,6 +27,10 @@ dev_dependencies:
 
 flutter:
   assets:
-    - lib/assets/images/
+    - assets/images/
+    - assets/images/cutscenes/
+    - assets/images/characters/
+    - assets/images/scenarios/
+    
   uses-material-design: true
   

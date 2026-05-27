@@ -8,12 +8,19 @@ class Localizacao {
 }
 
 final listaLocalizacoes = [
-  //Para testes (todas no lugar onde estou)
+  /*Para testes (todas no lugar onde estou no celular)
+  Localizacao("Sala A02", -22.713477, -47.168591, "térreo"),
+  Localizacao("Sala Apoio Computacional", -22.713477, -47.168591, "térreo"),
+  Localizacao("Sala dos professores", -22.713477, -47.168591, "térreo"),
+  Localizacao("Sala 209", -22.713477, -47.168591, "térreo"),
+  Localizacao("Auditório", -22.713477, -47.168591, "térreo"),*/
+
+  //Para testes (todas no lugar onde estou no pc)
   Localizacao("Sala A02", -22.9056, -47.0595, "térreo"),
-  Localizacao("Sala A02", -22.9056, -47.0595, "térreo"),
-  Localizacao("Sala A02", -22.9056, -47.0595, "térreo"),
-  Localizacao("Sala A02", -22.9056, -47.0595, "térreo"),
-  Localizacao("Sala A02", -22.9056, -47.0595, "térreo"),  
+  Localizacao("Sala Apoio computacional", -22.9056, -47.0595, "térreo"),
+  Localizacao("Sala dos professores", -22.9056, -47.0595, "térreo"),
+  Localizacao("Sala 209", -22.9056, -47.0595, "térreo"), 
+  Localizacao("Auditório", -22.9056, -47.0595, "térreo"),   
 
   //Oficiais
   //Localizacao("Sala A02", -22.833048, -47.052658, "terreo"),

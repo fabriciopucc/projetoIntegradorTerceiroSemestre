@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
+import 'package:rpg_projeto_integrador/widgets/snackbar_widget.dart';
 
 import '../models/localizacao.dart';
 import '../providers/sessao_provider.dart';
@@ -9,7 +11,7 @@ import '../providers/sessao_provider.dart';
 class ProgressaoService {
 
   //Alterar pontuação
-  Future<void> alterarPontuacao( SessaoProvider sessao, String operacao) async {
+  Future<void> alterarPontuacao( SessaoProvider sessao, String operacao, VariaveisGlobaisProvider global) async {
     final collection = FirebaseFirestore.instance .collection('saves');
     int novaPontuacao = sessao.pontuacao;
 
@@ -22,6 +24,9 @@ class ProgressaoService {
     await docRef.update({ 'pontuacao': novaPontuacao});
     sessao.pontuacao = novaPontuacao;
 
+    global.encerrarDialogo();
+    global.alterarExibirCutscene(true);
+    global.alterarExibirBotaoAvancarFase(false);
     sessao.notifyListeners();
   }
 
@@ -96,11 +101,10 @@ class ProgressaoService {
       // Distância
       double distancia = Geolocator.distanceBetween(
         //Atual
-        posicaoAtual.latitude,
-        posicaoAtual.longitude,
+        posicaoAtual.latitude, posicaoAtual.longitude,
+        
         //Do alvo
-        localizacaoAlvo.latitude,
-        localizacaoAlvo.longitude,
+        localizacaoAlvo.latitude, localizacaoAlvo.longitude,
       );
 
       bool chegou = distancia <= 10;
@@ -110,27 +114,15 @@ class ProgressaoService {
       if (chegou && localizacaoAlvo.nivel.toLowerCase() == andar.toLowerCase()) {
        await adicionarNivelDesbloqueado(sessao,);
         final nivelFase = sessao.pontuacao + 1;
-        ScaffoldMessenger.of( context).showSnackBar(
-          SnackBar(
-            content: Text( 'Fase $nivelFase desbloqueada!'),
-          ),
-        );
+
+        SnackbarWidget.mostrar(context,  'Fase $nivelFase desbloqueada!');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Você não está no local correto.'),
-          ),
-        );
+        SnackbarWidget.mostrar(context,  'Você não está no local correto!!');
       }
     } catch (e) {
       fecharLoading(context);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-
-        SnackBar(
-          content: Text('Erro ao verificar localização: $e'),
-        ),
-      );
+      SnackbarWidget.mostrar(context,  'Erro ao verificar localização: $e');
     }
   }
 }

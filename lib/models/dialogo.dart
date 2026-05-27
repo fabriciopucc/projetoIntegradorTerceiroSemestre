@@ -12,9 +12,6 @@ final dialogosFase1 = [
   Dialogo("Alfa", "Eu sou o começo. E o começo sempre decide o fim.", "esquerdo"),
   Dialogo("Vector", "Ótimo. Então vamos começar direito", "direito"),
   Dialogo("Alfa", "Vamos ver se você é tudo isso mesmo. Resolva meu mais novo passatempo, e lhe direi aonde ir.", "esquerdo"),
-  Dialogo("Alfa", "Vejo que você é mesmo bom. Aquele bracelete é apenas um detalhe a mais no seu potencial.", "esquerdo"),
-  Dialogo("Vector", "Deixe os elogios para depois, diga logo para onde devo ir", "direito"),
-  Dialogo("Alfa", "Ok, se é isso que você quer. Lá vai:\nVinte telas observam o mestre, mas ninguém as vê.\nEntre o código e o cano, o segundo nível guarda o plano.\nProcure o apoio onde os bits descansam ao lado do fluxo das águas.", "esquerdo"),
 ];
 
 final dialogosFase2 = [
@@ -74,13 +71,6 @@ final dialogosFase4 = [
 final dialogosFase5 = [
   Dialogo("Senhor Vazio", "Você passou pelo Alfa. Isso já estava calculado.", "esquerdo"),
   Dialogo("Vector", "Então calcula isso: eu ainda vou sair daqui com meu bracelete", "direito"),
-  Dialogo("Senhor Vazio", "Ótimo. Então vamos começar direito", "esquerdo"),
-  Dialogo("Vector", "Ótimo. Então vamos começar direito", "direito"),
-  Dialogo("Senhor Vazio", "Ótimo. Então vamos começar direito", "esquerdo"),
-  Dialogo("Vector", "Ótimo. Então vamos começar direito", "direito"),
-  Dialogo("Senhor Vazio", "Ótimo. Então vamos começar direito", "esquerdo"),
-  Dialogo("Vector", "Ótimo. Então vamos começar direito", "direito"),
-  Dialogo("Senhor Vazio", "Ótimo. Então vamos começar direito", "esquerdo"),
 ];
 
 final listaDeDialogos = [

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rpg_projeto_integrador/models/dialogo.dart';
-import 'package:rpg_projeto_integrador/providers/sessao_provider.dart';
-import 'package:rpg_projeto_integrador/services/dialogo_service.dart';
+import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
 
 class WidgetDialogos extends StatefulWidget {
   final List<Dialogo> dialogos;
-  final int indice;
+  final VariaveisGlobaisProvider global;
 
   const WidgetDialogos({
     super.key,
     required this.dialogos,
-    required this.indice
+    required this.global
   });
 
   @override
@@ -19,18 +17,16 @@ class WidgetDialogos extends StatefulWidget {
 }
 
 class _WidgetDialogosState extends State<WidgetDialogos> {
-  final DialogoService service = DialogoService();
-
   void atualizarDialogo() {
     setState(() {
-      service.proximoDialogo(widget.dialogos);
+      widget.global.proximoDialogo(widget.dialogos);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool iniciou = service.iniciouDialogo();
-    final dialogoAtual = service.dialogoAtual(widget.dialogos);
+    final bool iniciou = widget.global.iniciouDialogo();
+    final dialogoAtual = widget.global.dialogoAtual(widget.dialogos);
 
     final bool mostrarOverlay = iniciou && dialogoAtual != null;
 
@@ -59,18 +55,44 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
                 if (!iniciou)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:Color.fromARGB(255, 0, 182, 76),
-                      foregroundColor:Colors.white,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      fixedSize: const Size(200, 45),
                       shape:RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
                     ),
                     onPressed: atualizarDialogo,
-                    child: const Text("Iniciar diálogo"),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFA855F7),
+                            Color(0xFF7E22CE),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 154, 5, 228),
+                          width: 3,
+                        ),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.global.exibirQuiz ? "Retomar diálogo": "Iniciar diálogo",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -86,6 +108,7 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
     return GestureDetector(
       onTap: atualizarDialogo,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (esquerda) _iconePersonagem(dialogo.autor),
 
@@ -95,16 +118,15 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
             elevation: 4,
             child: Container(
               width: 220,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     dialogo.autor,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 17.5,
                     ),
                   ),
 
@@ -112,7 +134,7 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
 
                   Text(
                     dialogo.texto,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 15),
                   ),
 
                   const SizedBox(height: 5),
@@ -140,16 +162,17 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
   Widget _iconePersonagem(String autor) {
 
     final img = 
-      (autor.toLowerCase() == "alfa") ? "alfa.png" 
+      (autor.toLowerCase() == "vector") ? "vector.png"
+    : (autor.toLowerCase() == "alfa") ? "alfa.png" 
     : (autor.toLowerCase() == "beta") ? "beta.png"
     : (autor.toLowerCase() == "gama") ? "gama.png"
-    : "delta.png";
+    : (autor.toLowerCase() == "delta") ? "delta.png"
+    : "senhorVazio.png";
 
     return Image.asset(
-      'lib/assets/images/$img',
-      width: 200,
+      'assets/images/characters/$img',
       height: 200,
-      fit: BoxFit.contain,
+      fit: BoxFit.fitHeight,
     );
   }
 }

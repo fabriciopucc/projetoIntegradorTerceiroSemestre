@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_projeto_integrador/models/cena.dart';
-import 'package:rpg_projeto_integrador/models/enigma.dart';
-import 'package:rpg_projeto_integrador/models/pergunta_quiz.dart';
-import 'package:rpg_projeto_integrador/providers/sessao_provider.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
-import 'package:rpg_projeto_integrador/services/progressao_service.dart';
-import 'package:rpg_projeto_integrador/widgets/carrossel_de_imagem.dart';
-import 'package:rpg_projeto_integrador/widgets/lista_dialogos.dart';
-import 'package:rpg_projeto_integrador/widgets/quiz_widget.dart';
+import 'package:void_riddles/models/cena_model.dart';
+import 'package:void_riddles/models/emigma_model.dart';
+import 'package:void_riddles/models/pergunta_quiz_model.dart';
+import 'package:void_riddles/providers/sessao_provider.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/services/progressao_service.dart';
+import 'package:void_riddles/widgets/bossBattleWidget.dart';
+import 'package:void_riddles/widgets/cutscenes_widget.dart';
+import 'package:void_riddles/widgets/dialogos_widget.dart';
+import 'package:void_riddles/widgets/puzzle_widget.dart';
+import 'package:void_riddles/widgets/quiz_widget.dart';
 
-import '../models/dialogo.dart';
+import '../models/dialogo_model.dart';
 
-class Fases {
+class FasesWidget {
 
   static Widget faseWidget({
     required String titulo,
@@ -38,29 +40,40 @@ class Fases {
               fit: BoxFit.cover,
             ),
           ),
-          child: global.exibirCutscene
-          ? CarrosselDeImagens(
+          child: global.exibirCutsceneFinal ? 
+            CutscenesWidget(
+              imagens: cenasFinais,
+              global: global,
+            )
+          : (global.exibirCutscene && !sessao.finalizado) ? 
+            CutscenesWidget(
               imagens: listaDeCenas[indice],
               global: global,
             )
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                WidgetDialogos(
-                  dialogos: listaDeDialogos[indice],
-                  global: global,
-                ),
-
                 const SizedBox(height: 20),
 
-                if (global.exibirQuiz)
+                if(!sessao.finalizado)
+                    DialogosWidget(
+                      dialogos: listaDeDialogos[indice],
+                      global: global,
+                      indice: indice
+                    ),
+                
+                const SizedBox(height: 20),
+
+                if (global.exibirQuiz && [0, 1].contains(indice))
                   QuizWidget(
-                    perguntas:
-                        listaDeListaDePerguntas[indice],
+                    perguntas: listaDeListaDePerguntas[indice],
                     global: global,
                   ),
 
-                if (global.exibirBotaoAvancarFase)
+                if(global.exibirPuzzle && indice == 3)
+                  PuzzleWidget(global: global,),
+
+                if (global.exibirBotaoAvancarFase && indice < 4)
                   ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -118,6 +131,9 @@ class Fases {
                   ),
                 ),
 
+                if(global.exibirBossBattle || sessao.finalizado)
+                  BossBattleWidget(sessao: sessao, global: global),
+
                 const SizedBox(height: 20),
               ],
             ),
@@ -126,38 +142,49 @@ class Fases {
     );
   }
 
-  static Widget enigma(int indice) {
+  static Widget enigma(int indice, VariaveisGlobaisProvider global) {
     
-    return Container(
-      height: 500,
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1B1135),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+      minHeight: 500,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Enigma: ",
-            style: const TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+      child: IntrinsicHeight(
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1B1135),
           ),
+          child: global.exibirCutsceneInicial ? 
+            CutscenesWidget(
+                imagens: cenasIniciais,
+                global: global,
+              )
+            : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Enigma: ",
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
 
-          SizedBox(height: 20),
+              SizedBox(height: 20),
 
-          Text(
-            enigmas[indice].texto,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Color.fromARGB(255, 213, 213, 213),
-              fontSize: 17.5,
-            ),
+              Text(
+                enigmas[indice].texto,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 213, 213, 213),
+                  fontSize: 17.5,
+                ),
+              ),
+            ],
           ),
-        ],
+        )
       ),
     );
   }
@@ -231,13 +258,6 @@ class Fases {
     if (sessao.pontuacao == 3 && sessao.niveisDesbloqueados.contains(3)) return fase_4(sessao, global);
     if (sessao.pontuacao == 4 && sessao.niveisDesbloqueados.contains(4)) return fase_5(sessao, global);
 
-    //Cópia para testes
-    /*if (sessao.pontuacao == 0) return fase_1(sessao, global);
-    if (sessao.pontuacao == 1) return fase_2(sessao, global);
-    if (sessao.pontuacao == 2) return fase_3(sessao, global);
-    if (sessao.pontuacao == 3) return fase_4(sessao, global);
-    if (sessao.pontuacao == 4) return fase_5(sessao, global);*/
-
-    return enigma(sessao.pontuacao);
+    return enigma(sessao.pontuacao, global);
   }
 }

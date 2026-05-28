@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_projeto_integrador/screens/teste.dart';
+import 'package:void_riddles/screens/configuracoes_screen.dart';
 
 // Screens
-import 'tela_novo_jogo.dart';
-import 'tela_carregar_jogo.dart';
+import 'novo_jogo_screen.dart';
+import 'carregar_jogo_screen.dart';
 
 // Widgets
-import '../widgets/botao_menu.dart';
+import '../widgets/botao_menu_widget.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -24,11 +24,13 @@ class _TelaInicialState extends State<TelaInicial> {
     //Fundo
     "assets/images/bg.png",
     //Characters
-    "assets/images/characters/alfa.png", "assets/images/characters/beta.png", "assets/images/characters/delta.png", "assets/images/characters/bg.png", "assets/images/characters/gama.png", "assets/images/characters/senhorVazio.png", "assets/images/characters/vector.png",
+    "assets/images/characters/alfa.png", "assets/images/characters/beta.png", "assets/images/characters/delta.png", "assets/images/characters/gama.png", "assets/images/characters/senhorVazio.png", "assets/images/characters/vector.png",
     //Scenarios
     "assets/images/scenarios/cena_01.png", "assets/images/scenarios/cena_02.png", "assets/images/scenarios/cena_03.png", "assets/images/scenarios/cena_04.png", "assets/images/scenarios/cena_05.png",
     //Cutscenes
+    "assets/images/cutscenes/inicio_1.png", "assets/images/cutscenes/inicio_2.png", "assets/images/cutscenes/inicio_3.png", "assets/images/cutscenes/inicio_4.png", 
     "assets/images/cutscenes/cena1_1.png", "assets/images/cutscenes/cena1_2.png", "assets/images/cutscenes/cena2_1.png", "assets/images/cutscenes/cena2_2.png", "assets/images/cutscenes/cena3_1.png", "assets/images/cutscenes/cena3_2.png", "assets/images/cutscenes/cena4_1.png", "assets/images/cutscenes/cena4_2.png", "assets/images/cutscenes/cena5.png",
+    "assets/images/cutscenes/final_1.png", "assets/images/cutscenes/final_2.png", "assets/images/cutscenes/final_3.png", "assets/images/cutscenes/final_4.png", 
   ];
 
   @override
@@ -66,8 +68,32 @@ class _TelaInicialState extends State<TelaInicial> {
       return const Scaffold(
         backgroundColor: Color(0xFF1B1135),
         body: Center(
-          child: CircularProgressIndicator(
-            color: Color(0xFFB388FF),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Void Riddles",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFB388FF),
+                  letterSpacing: 2,
+                  shadows: [
+                    Shadow(
+                      color: Color(0xFFB388FF),
+                      blurRadius: 18,
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 40,),
+
+              CircularProgressIndicator(
+                color: Color(0xFFB388FF),
+              ),
+            ],
           ),
         ),
       );
@@ -107,19 +133,24 @@ class _TelaInicialState extends State<TelaInicial> {
 
               const SizedBox(height: 30),
 
-              BotaoMenu(
+              BotaoMenuWidget(
                 texto: "Novo Jogo",
-                telaDestino: const TelaNovoJogo(),
+                telaDestino: const NovoJogoScreen(),
               ),
 
-              BotaoMenu(
+               BotaoMenuWidget(
                 texto: "Carregar Jogo",
-                telaDestino: const TelaCarregarJogo(),
+                telaDestino: const CarregarJogoScreen(),
               ),
 
-              BotaoMenu(
+               BotaoMenuWidget(
+                texto: "Configurações",
+                telaDestino: const ConfiguracoesScreen(),
+              ),
+
+               BotaoMenuWidget(
                 texto: "Sair",
-                telaDestino: const TelaTeste(),
+                telaDestino: const TelaInicial(),
               ),
             ],
           ),

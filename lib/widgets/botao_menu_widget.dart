@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class BotaoMenu extends StatelessWidget {
+class BotaoMenuWidget extends StatelessWidget {
   final String texto;
   final Widget telaDestino;
 
-  const BotaoMenu({
+  const BotaoMenuWidget({
     super.key,
     required this.texto,
     required this.telaDestino,

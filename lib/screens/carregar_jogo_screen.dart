@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:provider/provider.dart';
-import 'package:rpg_projeto_integrador/models/localizacao.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
-import 'package:rpg_projeto_integrador/widgets/snackbar_widget.dart';
+import 'package:void_riddles/models/localizacao_model.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/widgets/snackbar_widget.dart';
 
 import '../providers/sessao_provider.dart';
 
-import 'tela_jogo.dart';
+import 'jogo_screen.dart';
 
-class TelaCarregarJogo extends StatelessWidget {
-  const TelaCarregarJogo({super.key});
+class CarregarJogoScreen extends StatelessWidget {
+  const CarregarJogoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +60,7 @@ class TelaCarregarJogo extends StatelessWidget {
               final List<int> niveisDesbloqueados = List<int>.from(
                 data['niveis_desbloqueados'] ?? [],
               );
+              final finalizado = data['finalizado'] ?? false;
               final fase = pontuacao + 1;
 
               return Card(
@@ -70,9 +71,17 @@ class TelaCarregarJogo extends StatelessWidget {
                   ),),
 
                   subtitle: Text(
-                    niveisDesbloqueados.contains(pontuacao) 
-                      ?  listaLocalizacoes[pontuacao].nome 
-                      : "Procurando local fase $fase",
+                    finalizado
+                        ? "Finalizado"
+                        : niveisDesbloqueados.contains(pontuacao)
+                            ? listaLocalizacoes[pontuacao].nome
+                            : "Procurando local fase $fase",
+
+                    style: TextStyle(
+                      color: finalizado
+                          ? const Color.fromARGB(255, 19, 186, 105)
+                          : const Color.fromARGB(255, 75, 74, 74),
+                    ),
                   ),
 
                   trailing: Row(
@@ -84,19 +93,23 @@ class TelaCarregarJogo extends StatelessWidget {
                           final global = Provider.of<VariaveisGlobaisProvider>(context, listen: false);
                           
                           global.alterarExibirQuiz(false);
+                          global.alterarExibirPuzzle(false);
                           global.alterarExibirBotaoAvancarFase(false);
                           global.alterarExibirCutscene(true);
-                          
+                          if(pontuacao == 0) global.alterarExibirCutsceneInicial(true);
+                          global.alterarExibirBossBattle(false);
+
                           Provider.of<SessaoProvider>(context, listen: false).carregarSave(
                             novoSaveId: doc.id,
                             novoNome: nome,
                             novaPontuacao: pontuacao,
-                            novoNiveisDesbloqueados: niveisDesbloqueados
+                            novoNiveisDesbloqueados: niveisDesbloqueados,
+                            novoFinalizado: finalizado
                           );
                           
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const TelaJogo()),
+                            MaterialPageRoute(builder: (_) => const JogoScreen()),
                           );
                         },
                         child: const Text('Carregar'),

@@ -44,36 +44,47 @@ List<PerguntaQuiz> perguntasFase1 = [
 
 List<PerguntaQuiz> perguntasFase2 = [
   PerguntaQuiz(
-    pergunta: "Qual widget permite criar uma lista rolável no Flutter?",
+    pergunta: "Quanto é 15% de 200?",
 
-    alternativa1: "Container",
-    alternativa2: "Scaffold",
-    alternativa3: "ListView",
-    alternativa4: "Padding",
+    alternativa1: "20",
+    alternativa2: "25",
+    alternativa3: "30",
+    alternativa4: "35",
 
     correta: 3,
   ),
 
   PerguntaQuiz(
-    pergunta: "Qual método é chamado automaticamente ao iniciar um StatefulWidget?",
+    pergunta: "Qual é o valor de 2³ + 4²?",
 
-    alternativa1: "build()",
-    alternativa2: "createState()",
-    alternativa3: "dispose()",
-    alternativa4: "initState()",
+    alternativa1: "20",
+    alternativa2: "24",
+    alternativa3: "18",
+    alternativa4: "16",
 
-    correta: 4,
+    correta: 2,
   ),
 
   PerguntaQuiz(
-    pergunta: "Qual palavra-chave torna uma variável imutável em Dart?",
+    pergunta: "Um triângulo possui lados 3, 4 e 5. Ele é:",
 
-    alternativa1: "final",
-    alternativa2: "dynamic",
-    alternativa3: "var",
-    alternativa4: "late",
+    alternativa1: "Equilátero",
+    alternativa2: "Isósceles",
+    alternativa3: "Retângulo",
+    alternativa4: "Obtusângulo",
 
-    correta: 1,
+    correta: 3,
+  ),
+
+  PerguntaQuiz(
+    pergunta: "Se f(x) = 2x + 3, qual é o valor de f(5)?",
+
+    alternativa1: "10",
+    alternativa2: "12",
+    alternativa3: "13",
+    alternativa4: "15",
+
+    correta: 3,
   ),
 ];
 

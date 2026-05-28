@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
-import 'package:rpg_projeto_integrador/services/progressao_service.dart';
-import 'package:rpg_projeto_integrador/widgets/botao_desbloquear_nivel.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/services/progressao_service.dart';
+import 'package:void_riddles/widgets/desbloquear_fase_widget.dart';
 
-import 'fases.dart';
+import '../widgets/fases_widget.dart';
 import '../providers/sessao_provider.dart';
 
-class TelaJogo extends StatefulWidget {
+class JogoScreen extends StatefulWidget {
 
-  const TelaJogo({
+  const JogoScreen({
     super.key,
   });
 
   @override
-  State<TelaJogo> createState() => _TelaJogoState();
+  State<JogoScreen> createState() => _JogoScreenState();
 }
 
-class _TelaJogoState extends State<TelaJogo> {
+class _JogoScreenState extends State<JogoScreen> {
 
   final ProgressaoService progressaoService = ProgressaoService();
   String andarSelecionado = 'Térreo';
@@ -38,13 +38,6 @@ class _TelaJogoState extends State<TelaJogo> {
         backgroundColor: const Color(0xFF1B1135),
         appBar: AppBar(
           backgroundColor: const Color(0xFF1B1135),
-          title: const Text(
-            'Jogo',
-            style: TextStyle(
-              color: Colors.white, // Deixa o texto branco
-              fontSize: 20,
-            ),
-          ),
           iconTheme: const IconThemeData( color: Colors.white),
           actionsIconTheme: const IconThemeData(color: Colors.white),
         ),
@@ -55,7 +48,7 @@ class _TelaJogoState extends State<TelaJogo> {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  child: Fases.renderizarFase(sessao, global),
+                  child: FasesWidget.renderizarFase(sessao, global),
                 ),
 
                 const SizedBox(height: 25),
@@ -207,7 +200,7 @@ class _TelaJogoState extends State<TelaJogo> {
 
                         const SizedBox(height: 15),
 
-                        BotaoDesbloquearNivel(sessao: sessao, andar: andarSelecionado),
+                        BotaoDesbloquearFaseWidget(sessao: sessao, andar: andarSelecionado),
                       ],
                     ),
 

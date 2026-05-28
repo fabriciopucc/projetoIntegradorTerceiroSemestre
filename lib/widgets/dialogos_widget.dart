@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_projeto_integrador/models/dialogo.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/models/dialogo_model.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
 
-class WidgetDialogos extends StatefulWidget {
+class DialogosWidget extends StatefulWidget {
   final List<Dialogo> dialogos;
   final VariaveisGlobaisProvider global;
+  final int indice;
 
-  const WidgetDialogos({
+  const DialogosWidget({
     super.key,
     required this.dialogos,
-    required this.global
+    required this.global,
+    required this.indice
   });
 
   @override
-  State<WidgetDialogos> createState() => _WidgetDialogosState();
+  State<DialogosWidget> createState() => _DialogosWidgetState();
 }
 
-class _WidgetDialogosState extends State<WidgetDialogos> {
+class _DialogosWidgetState extends State<DialogosWidget> {
   void atualizarDialogo() {
     setState(() {
-      widget.global.proximoDialogo(widget.dialogos);
+      widget.global.proximoDialogo(widget.dialogos, widget.indice);
     });
   }
 
@@ -83,7 +85,9 @@ class _WidgetDialogosState extends State<WidgetDialogos> {
                       child: Container(
                         alignment: Alignment.center,
                         child: Text(
-                          widget.global.exibirQuiz ? "Retomar diálogo": "Iniciar diálogo",
+                          ((widget.global.exibirQuiz && [0, 1].contains(widget.indice)) || (widget.global.exibirPuzzle && widget.indice == 3) || (widget.global.exibirBossBattle && widget.indice == 4)) 
+                            ? "Retomar diálogo"
+                            : "Iniciar diálogo",
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,

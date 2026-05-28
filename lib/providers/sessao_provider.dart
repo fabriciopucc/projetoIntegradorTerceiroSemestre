@@ -7,18 +7,21 @@ class SessaoProvider extends ChangeNotifier {
   int pontuacao = 0;
   List<int> niveisDesbloqueados = [];
   bool carregado = false;
+  bool finalizado = false;
 
   void carregarSave({
     required String novoSaveId,
     required String novoNome,
     required int novaPontuacao,
-    required List<int> novoNiveisDesbloqueados
+    required List<int> novoNiveisDesbloqueados,
+    required bool novoFinalizado
   }) {
     saveId = novoSaveId;
     nome = novoNome;
     pontuacao = novaPontuacao;
     niveisDesbloqueados = novoNiveisDesbloqueados;
     carregado = true;
+    finalizado = novoFinalizado;
 
     notifyListeners();
   }
@@ -29,6 +32,7 @@ class SessaoProvider extends ChangeNotifier {
     pontuacao = 0;
     niveisDesbloqueados = [];
     carregado = false;
+    finalizado = false;
 
     notifyListeners();
   }

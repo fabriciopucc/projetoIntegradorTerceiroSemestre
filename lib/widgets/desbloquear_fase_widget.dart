@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../providers/sessao_provider.dart';
 import '../services/progressao_service.dart';
 
-class BotaoDesbloquearNivel extends StatelessWidget {
+class BotaoDesbloquearFaseWidget extends StatelessWidget {
 
   final SessaoProvider sessao;
   final String andar;
 
-  const BotaoDesbloquearNivel({super.key, required this.sessao, required this.andar});
+  const BotaoDesbloquearFaseWidget({super.key, required this.sessao, required this.andar});
 
   @override
   Widget build(BuildContext context) {

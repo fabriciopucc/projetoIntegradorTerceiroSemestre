@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rpg_projeto_integrador/models/pergunta_quiz.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/models/pergunta_quiz_model.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
 
 class QuizWidget extends StatefulWidget {
   final List<PerguntaQuiz> perguntas;

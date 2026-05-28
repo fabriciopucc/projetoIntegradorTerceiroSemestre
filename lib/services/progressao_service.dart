@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
-import 'package:rpg_projeto_integrador/widgets/snackbar_widget.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/widgets/snackbar_widget.dart';
 
-import '../models/localizacao.dart';
+import '../models/localizacao_model.dart';
 import '../providers/sessao_provider.dart';
 
 class ProgressaoService {
@@ -95,7 +95,7 @@ class ProgressaoService {
 
       Position posicaoAtual = await Geolocator.getCurrentPosition(
         desiredAccuracy:LocationAccuracy.medium,
-        timeLimit: const Duration( seconds: 8),
+        timeLimit: const Duration( seconds: 15),
       );
 
       // Distância
@@ -123,6 +123,23 @@ class ProgressaoService {
       fecharLoading(context);
 
       SnackbarWidget.mostrar(context,  'Erro ao verificar localização: $e');
+    }
+  }
+
+  Future<void> finalizarJogo(SessaoProvider sessao) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('saves')
+          .doc(sessao.saveId)
+          .update({
+        'finalizado': true,
+      });
+
+      sessao.notifyListeners();
+
+      print('Jogo finalizado com sucesso!');
+    } catch (e) {
+      print('Erro ao finalizar jogo: $e');
     }
   }
 }

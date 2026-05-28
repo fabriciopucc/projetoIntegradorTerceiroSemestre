@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:rpg_projeto_integrador/providers/variaveis_globais_provider.dart';
+import 'package:void_riddles/providers/variaveis_globais_provider.dart';
 
 import '../widgets/snackbar_widget.dart';
 import '../providers/sessao_provider.dart';
-import 'tela_jogo.dart';
+import 'jogo_screen.dart';
 
-class TelaNovoJogo extends StatefulWidget {
-  const TelaNovoJogo({super.key});
+class NovoJogoScreen extends StatefulWidget {
+  const NovoJogoScreen({super.key});
 
   @override
-  State<TelaNovoJogo> createState() => _TelaNovoJogoState();
+  State<NovoJogoScreen> createState() => _NovoJogoScreenState();
 }
 
-class _TelaNovoJogoState extends State<TelaNovoJogo> {
+class _NovoJogoScreenState extends State<NovoJogoScreen> {
 
   final TextEditingController nomeController = TextEditingController();
 
@@ -49,15 +49,18 @@ class _TelaNovoJogoState extends State<TelaNovoJogo> {
     final global = Provider.of<VariaveisGlobaisProvider>(context, listen: false);
                           
     global.alterarExibirQuiz(false);
+    global.alterarExibirPuzzle(false);
     global.alterarExibirBotaoAvancarFase(false);
     global.alterarExibirCutscene(true);
+    global.alterarExibirCutsceneInicial(true);
+    global.alterarExibirBossBattle(false);
 
     // Salvar no firestone
-    final novoSave =
-        await collection.add({
+    final novoSave = await collection.add({
       'nome': nome,
       'pontuacao': 0,
-      'niveis_desbloqueados': []
+      'niveis_desbloqueados': [],
+      'finalizado': false
     });
 
     // Cria sessão
@@ -68,7 +71,8 @@ class _TelaNovoJogoState extends State<TelaNovoJogo> {
       novoSaveId: novoSave.id,
       novoNome: nome,
       novaPontuacao: 0,
-      novoNiveisDesbloqueados: []
+      novoNiveisDesbloqueados: [],
+      novoFinalizado: false
     );
 
     // Sucesso
@@ -77,7 +81,7 @@ class _TelaNovoJogoState extends State<TelaNovoJogo> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => const TelaJogo(),
+        builder: (_) => const JogoScreen(),
       ),
     );
   }

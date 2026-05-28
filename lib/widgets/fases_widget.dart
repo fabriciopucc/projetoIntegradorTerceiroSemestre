@@ -5,7 +5,7 @@ import 'package:void_riddles/models/pergunta_quiz_model.dart';
 import 'package:void_riddles/providers/sessao_provider.dart';
 import 'package:void_riddles/providers/variaveis_globais_provider.dart';
 import 'package:void_riddles/services/progressao_service.dart';
-import 'package:void_riddles/widgets/bossBattleWidget.dart';
+import 'package:void_riddles/widgets/boss_battle_widget.dart';
 import 'package:void_riddles/widgets/cutscenes_widget.dart';
 import 'package:void_riddles/widgets/dialogos_widget.dart';
 import 'package:void_riddles/widgets/puzzle_widget.dart';

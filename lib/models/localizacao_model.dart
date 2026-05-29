@@ -9,16 +9,9 @@ class Localizacao {
 
 final listaLocalizacoes = [
   //Oficiais
-  //Localizacao("Sala A02", -22.833048, -47.052658, "terreo"),
-  //Localizacao("Sala apoio computacional!", -22.833169, -47.052813, "1º andar"),
-  //Localizacao("Sala dos professores", -22.833077, -47.052552, "térreo"),
-  //Localizacao("Sala 209", -22.833073, -47.052574, "3º andar"),
-  //Localizacao("Auditório", -22.833201, -47.052908, "subsolo"),
-
-  //Para testes (todas no lugar onde estou no celular)
-  Localizacao("Sala A02", -22.713477, -47.168591, "térreo"),
-  Localizacao("Sala Apoio Computacional", -22.713477, -47.168591, "térreo"),
-  Localizacao("Sala dos professores", -22.713477, -47.168591, "térreo"),
-  Localizacao("Sala 209", -22.713477, -47.168591, "térreo"),
-  Localizacao("Auditório", -22.713477, -47.168591, "térreo"),
+  Localizacao("Sala A02", -22.8332087, -47.0526311, "térreo"),
+  Localizacao("Sala apoio computacional!", -22.8331507, -47.0528881, "1º andar"),
+  Localizacao("Sala dos professores", -22.8331008, -47.0525102, "térreo"),
+  Localizacao("Sala 209", -22.8331778, -47.0525477, "3º andar"),
+  Localizacao("Auditório", -22.8332298, -47.0528363, "subsolo"),
 ];
